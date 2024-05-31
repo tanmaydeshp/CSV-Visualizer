@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar">
+  <div class="nav-logo">
+
+  </div>
+  <ul class="nav-items">
+  <li class="nav-link"><a href="{{ url_for('views.home') }}">Home</a></li>
+  {% if not(user.is_authenticated) %}
+  <li class="nav-link"><a href="{{ url_for('auth.register') }}">Register</a></li>
+  <li class="nav-link"><a href="{{ url_for('auth.login') }}">Login</a></li>  
+  {% endif %}
+  {% if user.is_authenticated %}
+  <li class="nav-link"><a href="{{ url_for('views.myfiles') }}">My Files</a></li>
+  <li class="nav-link"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+  {% endif %}
+  </ul>
+</nav>
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {{ message }}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

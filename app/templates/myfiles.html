@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}My Files{% endblock %}
+{% block content %}
+<h1>My Files</h1>
+<form method="POST" enctype="multipart/form-data">
+<input type="file" id="file" name="file" accept=".csv">
+<button class="upload-btn" type="submit">Upload</button>
+</form>
+{% if user.is_authenticated %}
+{% if user.files %}
+<h1>Uploads</h1>
+<ul class="files-lst">
+    {% for file in user.files %}
+    <li class="file-nm"><a href="download_file({{ file.id }})">{{ file.filename }}</span> uploaded at {{file.uploaded_at}}
+    <button class="close-btn" onclick="delete_file({{ file.id }})" type="button"> <span aria-hidden="true">&times;</span></button>
+    </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endif %}
+{% endblock %}
