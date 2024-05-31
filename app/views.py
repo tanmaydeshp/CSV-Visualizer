@@ -47,12 +47,10 @@ def delete_file() :
         flash("File deleted successfully!", category="success")
     return jsonify({})
 
-@views.route('/download_file/')
+@views.route('/download_file/', methods=['POST'])
 @login_required 
-def download_file():
-    filedict = request.get_json()
-    id = filedict['fileID']
-    file = File.query.get(id)
+def download_file(filename):
+    file = File.query.filter_by(filename=filename).first()
     if file:
         return send_from_directory(app.config['UPLOAD_FOLDER'], file.filename, as_attachment=True)
 

@@ -11,7 +11,7 @@
 <h1>Uploads</h1>
 <ul class="files-lst">
     {% for file in user.files %}
-    <li class="file-nm"><a href="download_file({{ file.id }})">{{ file.filename }}</span> uploaded at {{file.uploaded_at}}
+    <li class="file-nm"><span onclick="download_file({{ file.filename }})">{{ file.filename }}</span> uploaded at {{file.uploaded_at}}
     <button class="close-btn" onclick="delete_file({{ file.id }})" type="button"> <span aria-hidden="true">&times;</span></button>
     </li>
     {% endfor %}
