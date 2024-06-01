@@ -26,6 +26,8 @@ def myfiles():
         if file: 
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            if path.exists(path):
+                flash('A file with the same name already exists!', category='error')
             file.save(path)
             f = File(path=path, author_id = current_user.id, uploaded_at= datetime.now(), filename=filename)
             db.session.add(f)
@@ -47,11 +49,11 @@ def delete_file() :
         flash("File deleted successfully!", category="success")
     return jsonify({})
 
-@views.route('/download_file/', methods=['POST'])
+@views.route('/uploads/<filename>')
 @login_required 
 def download_file(filename):
     file = File.query.filter_by(filename=filename).first()
-    if file:
+    if file and file.author_id == current_user.id:
         return send_from_directory(app.config['UPLOAD_FOLDER'], file.filename, as_attachment=True)
 
 
